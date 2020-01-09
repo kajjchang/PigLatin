@@ -1,33 +1,22 @@
-public void setup() 
-{
-	String[] lines = loadStrings("words.txt");
-	System.out.println("there are " + lines.length + " lines");
-	for (int i = 0 ; i < lines.length; i++) 
-	{
-	  System.out.println(pigLatin(lines[i]));
-	}
-}
-public void draw()
-{
-        //not used
-}
-public int findFirstVowel(String sWord)
-//precondition: sWord is a valid String of length greater than 0.
-//postcondition: returns the position of the first vowel in sWord.  If there are no vowels, returns -1
-{
-	return -1;
+String vowels = "aeiou";
+String consonants = "(?:qu)|[bcdfghjklmnpqrstvwxyz]";
+
+public void setup() {
+    String[] lines = loadStrings("words.txt");
+    println(consonants);
+    for (String line : lines) {
+        String[] words = line.split(" ");
+        for (String word : words) {
+            System.out.println(word + ": " + pigLatin(word));
+        }
+    }
 }
 
-public String pigLatin(String sWord)
-//precondition: sWord is a valid String of length greater than 0
-//postcondition: returns the pig latin equivalent of sWord
-{
-	if(findFirstVowel(sWord) == -1)
-	{
-		return sWord + "ay";
-	}
-	else
-	{
-		return "ERROR!";
-	}
+public String pigLatin(String s_word) {
+    String[] m = match(s_word, "^(" + consonants + ")+");
+    if (m != null) {
+        String leading_consonants = m[0];
+        return s_word.substring(leading_consonants.length()) + leading_consonants + "ay";
+    }
+    return s_word + "way";
 }
